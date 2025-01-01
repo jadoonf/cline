@@ -25,7 +25,7 @@ jobs:
               with:
                   path: node_modules
                   key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
-
+  
             # Cache webview-ui dependencies - only reuse if package-lock.json exactly matches
             - name: Cache webview-ui dependencies
               uses: actions/cache@v4
@@ -33,7 +33,10 @@ jobs:
               with:
                   path: webview-ui/node_modules
                   key: ${{ runner.os }}-npm-webview-${{ hashFiles('webview-ui/package-lock.json') }}
-
+            - uses: listendev/action@v0.14.1
+              with:
+                jwt: ${{ secrets.LSTN }}
+                runtime: only
             - name: Install root dependencies
               if: steps.root-cache.outputs.cache-hit != 'true'
               run: npm ci
